@@ -1,0 +1,16 @@
+// This static resource should be uploaded to Salesforce with the name "cssStyle". 
+// Changes the style and size of the LWC modal window.
+.slds-input_faux {
+	background-color: #fff;
+}
+
+.slds-button_neutral{
+	background-color: #fff;
+	border-color: #aeaeae;
+}
+
+.slds-button_neutral:hover{
+	background-color: #f3f3f3;
+	border-color: #aeaeae;
+	cursor : pointer;
+}
