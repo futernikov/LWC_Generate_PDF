@@ -1,0 +1,29 @@
+<!--
+    CREATED BY: Eugene Lanets on 04/10/2023.
+    AT REQUEST OF: FHP_Partial
+    DESCRIPTION:
+ -->
+
+<!-- Generate Move Order Pdf -->
+<template>
+    <template if:false={previewPDF}>
+        <div class="header"><b>Generation, please wait...</b></div>
+        <div class="body" style="position: relative; width: 100%; height: 150px">
+            <div class="exampleHolder">
+                <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+            </div>
+        </div>
+    </template>
+    <template if:true={previewPDF}>
+        <div style="width: 100%; height: 55vh">
+            <iframe style="width: 100%; height: 100%" src={url}></iframe>
+        </div>
+    </template>
+    <div slot="footer" class="footerCustom">
+        <template if:false={displayOnPage}>
+            <lightning-button label="Cancel" style="margin-right: 10px;" onclick={closeQuickAction}></lightning-button>
+        </template>
+        <lightning-button  variant="brand" label="Save PDF" onclick={saveFile}></lightning-button>
+    </div>
+
+</template>

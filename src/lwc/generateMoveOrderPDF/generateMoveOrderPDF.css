@@ -1,0 +1,25 @@
+/**
+    CREATED BY: Eugene Lanets on 04/10/2023.
+    AT REQUEST OF: FHP_Partial
+    DESCRIPTION:
+*/
+
+.header{
+    width: 100%;
+    border-bottom: 1px solid gray;
+    font-size: 18px;
+    text-align: center;
+    height: 40px;
+    position: absolute;
+    left: 0;
+    margin-top: 8px;
+}
+.body{
+    padding: 50px 20px;
+}
+
+.footerCustom{
+    display: flex;
+    justify-content: flex-end;
+    padding: 5px 30px;
+}

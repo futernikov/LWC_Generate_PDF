@@ -1,0 +1,272 @@
+<!--
+ - Created by lanec on 29.05.2020.
+ -->
+
+<apex:page id="MoveOrderVFPage" renderAs="pdf" controller="MoveOrderVFPageController" standardStylesheets="false"  contentType="application/pdf#QuotePDFTemplate.pdf" action="{!init}" applyBodyTag="false" applyHtmlTag="false" sidebar="false" showHeader="false">
+<!--    renderAs="pdf"-->
+    <head>
+        <style>
+
+            @page{
+                margin: 0.15in 0.15in 0.8in 0.15in;
+
+                @bottom-right {
+                    content: element(footer);
+                }
+            }
+
+
+            div.footer {
+                position: running(footer);
+            }
+
+
+
+            body{ font-size: 13px}
+
+            .table {
+                margin: 0 auto;
+                padding-bottom: 85px;
+            }
+            .header {
+                /*padding-left: 260px;*/
+                font-size: 22px;
+                text-align: center;
+            }
+            table{ width: 100% }
+            table, th, td {
+                border: 1px solid black;
+                border-collapse: collapse;
+                text-align: center;
+                font-weight: 700;
+            }
+
+            th, td {
+                padding: 11px;
+            }
+
+            td.special {
+                padding: 2px;
+            }
+
+            .special-content {
+                word-wrap: break-word;
+                word-break: break-all;
+            }
+
+
+            th {
+                text-align: left;
+            }
+            .up{
+                border-bottom: 0;
+                padding-top: 2px;
+                text-align: center;
+            }
+            .down{
+                text-align: center;
+                border-top: 0;
+                padding-bottom: 2px;
+            }
+            .red{
+                color: red;
+                margin: 0;
+            }
+            .warning{
+                color: #a50707;
+                margin: 0;
+            }
+            .line{
+                height: 2px;
+                background-color: black;
+                width: 100%;
+                margin: 5px auto 15px;
+            }
+            .addresses{
+                width: 100%;
+                margin: 0 auto 3px;
+                display: flex;
+                justify-content: center;
+                font-size: 14px;
+            }
+            .center {
+                text-align: center;
+            }
+
+            .line{
+                height: 2px;
+                background-color: black;
+                width: 100%;
+                margin: 10px auto 10px;
+            }
+
+            pre{
+                white-space: pre-wrap;       
+                white-space: -moz-pre-wrap;  
+                white-space: -pre-wrap;      
+                white-space: -o-pre-wrap;    
+                word-wrap: break-word; 
+            }
+
+        </style>
+    </head>
+
+    <body>
+
+    <div class="footer">
+        <div style="text-align: center; font-size: 14px">Send invoice to <a href="mailto:Finance@faustharrisonpianos.com">Finance@faustharrisonpianos.com</a></div>
+        <div class="line"></div>
+        <div style="text-align: center"><b>West Coast Headquarters: </b>White Plains, NY <b>(914) 288-4000</b><span style="padding: 0 50px;">|</span><b>East Coast Headquarters: </b>Sherman Oaks, CA <b>(818) 787-0201</b></div>
+    </div>
+
+    <div class="center">
+        <img style="height: 160px" src="{!$Resource.Logo_new}"/>
+    </div>
+
+    <h1 class="header">{!header}</h1>
+    <apex:outputText rendered="{!moveOrder.Do_Not_Unbox__c}">
+        <h2 style="text-align: center;"><b>DO NOT UNBOX</b></h2>
+    </apex:outputText>
+
+    <div class="table">
+        <table style="width: 100%;">
+            <tr>
+                <th style="width: 25%" class="up"> Entered By:</th>
+                <th style="width: 25%" class="up">{!$User.FirstName} {!$User.LastName}</th>
+                <th style="width: 25%" class="up">Order Date:</th>
+                <th style="width: 25%" class="up">
+                    <apex:outputText value="{0,date,MM'/'dd'/'yyyy}">
+                        <apex:param value="{!moveOrder.Order_Date__c}" />
+                    </apex:outputText>
+                </th>
+            </tr>
+            <tr >
+                <th class="down">Salesperson: </th>
+                <th class="down">{!moveOrder.Salesperson__c}</th>
+                <th class="down">Moving Co:</th>
+                <th class="down">{!moveOrder.Moving_Company__r.Name}</th>
+            </tr>
+            <tr>
+                <td>Requested P/U Date:</td>
+                <td>
+                    <apex:outputText value="{0,date,EEEE MM'/'dd'/'yyyy}">
+                        <apex:param value="{!moveOrder.Requested_Pickup_Date__c}" />
+                    </apex:outputText>
+                </td>
+                <td>Requested Delivery Date:</td>
+                <td>
+                    <apex:outputText value="{0,date,EEEE MM'/'dd'/'yyyy}">
+                        <apex:param value="{!moveOrder.Target_Delivery__c}" />
+                    </apex:outputText>
+                </td>
+            </tr>
+            <tr>
+                <td>Piano:</td>
+                <td colspan="3" style="padding: 5px 0">
+                    <table style="width: 100%; border: 0; padding: 0;" >
+                        <tr style="border: 0; padding: 0;">
+                            <td style="border: 0; padding: 0;">
+                                Product Name
+                            </td>
+                            <td style="border: 0; padding: 0;">
+                                Quantity
+                            </td>
+                            <td style="border: 0; padding: 0;">
+                                Serial Number
+                            </td>
+                        </tr>
+                        <apex:repeat value="{!itemsData}" var="item">
+                            <tr style="border: 0; padding: 0;">
+                                <td style="border: 0; padding: 0;">{!item.productName}</td>
+                                <td style="border: 0; padding: 0;">{!item.quantity}</td>
+                                <td style="border: 0; padding: 0;">{!item.serialNumber}</td>
+                            </tr>
+                        </apex:repeat>
+                    </table>
+                    <apex:outputText rendered="{!moveOrder.Do_Not_Unbox__c}">
+                        <p style="text-align: center;"><b>DO NOT UNBOX</b></p>
+                    </apex:outputText>
+                </td>
+
+            </tr>
+            <tr>
+                <td>Accessories:</td>
+                <td colspan="1">{!moveOrder.Accessories__c}</td>
+                <td>Bench Type:</td>
+                <td>{!moveOrder.Bench_Type__c}</td>
+            </tr>
+            <tr>
+                <td>Move from: <br/> <p class="red">IF FHP-RM/UP OR DOWN?:</p> </td>
+                <td><apex:outputText escape="false" value="{!moveOrder.From_Address_Formula__c}"></apex:outputText></td>
+                <td><p class="red">Move From: Phone #</p></td>
+                <td><apex:outputText escape="false" value="{!moveOrder.Move_From_Phone__c}"></apex:outputText></td>
+            </tr>
+            <apex:outputText rendered="{!IF(moveOrder.RecordType.Name != 'Internal Move', true, false)}">
+                <tr>
+                    <td><p class="red"># Steps at P/U:</p> </td>
+                    <td colspan="1">{!moveOrder.Steps_at_Pickup__c}</td>
+                    <td><p class="red">COD?:</p><p class="warning">*MUST BE BANK CHECK</p> </td>
+                    <td colspan="1">
+                        <div>{!moveOrder.COD__c}</div>
+                        <div><apex:outputText rendered="{!IF(moveOrder.COD__c == 'COD Required', true, false)}" value="{0, number, $###,##0.00}"><apex:param value="{!moveOrder.COD_Amount__c}"/></apex:outputText></div>
+                    </td>
+                </tr>
+            </apex:outputText>
+            <tr>
+                <td>Move to: <br/> <p class="red">IF FHP-RM/UP OR DOWN?:</p> </td>
+                <td><apex:outputText escape="false" value="{!moveOrder.To_Address_Formula__c}"></apex:outputText></td>
+                <td>
+                    <p class="red">Move To:</p>
+                    <p class="red">Phone #</p>
+                </td>
+                <td><apex:outputText escape="false" value="{!moveOrder.Move_To_Phone__c}"></apex:outputText></td>
+            </tr>
+            <apex:outputText rendered="{!IF(moveOrder.RecordType.Name != 'Internal Move', true, false)}">
+                <tr>
+                    <apex:outputText rendered="{!IF(moveOrder.RecordType.Name == 'Pickup', false, true)}">
+                        <td><p class="red"># Steps at Delivery:</p> </td>
+                        <td>{!moveOrder.Steps_at_Delivery__c}</td>
+                        <td><p class="red">Piano to Pickup:</p></td>
+                        <td>{!moveOrder.Piano_to_Pick_up__c}</td>
+                    </apex:outputText>
+                    <apex:outputText rendered="{!IF(moveOrder.RecordType.Name == 'Pickup', true, false)}">
+                        <td><p class="red"># Steps at Delivery:</p> </td>
+                        <td colspan="3">{!moveOrder.Steps_at_Delivery__c}</td>
+                    </apex:outputText>
+                </tr>
+            </apex:outputText>
+            <tr>
+                <apex:outputText rendered="{!IF(moveOrder.RecordType.Name == 'Pickup', false, true)}">
+                    <td>Showroom:</td>
+                    <td colspan="1">{!moveOrder.BillTo__c}</td>
+                    <td colspan="1">What to do w. piano picked up:</td>
+                    <td colspan="1">{!moveOrder.What_to_do_w_piano_picked_up__c}</td>
+                </apex:outputText>
+                <apex:outputText rendered="{!IF(moveOrder.RecordType.Name == 'Pickup', true, false)}">
+                    <td>Showroom:</td>
+                    <td colspan="3">{!moveOrder.BillTo__c}</td>
+                </apex:outputText>
+            </tr>
+            <tr>
+                <td class="special">Special Instructions:</td>
+                <td colspan="3" style="width: 75%; overflow-wrap: break-word;word-break: break-all;">
+                    <div class="special-content">
+                        <pre style="font-family: serif;">{!moveOrder.Special_Instructions__c}</pre>                        
+                        <apex:outputText rendered="{!moveOrder.Do_Not_Unbox__c}">
+                            <p style="text-align: center;"><b>DO NOT UNBOX</b></p>
+                        </apex:outputText>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Mover Terms:</td>
+                <td colspan="3">
+                    <div style="font-size: 18px;">{!moveOrder.Mover_Terms__c}</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</body>
+
+</apex:page>
