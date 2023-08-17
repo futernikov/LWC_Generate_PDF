@@ -1,16 +1,23 @@
 // This static resource should be uploaded to Salesforce with the name "cssStyle". 
 // Changes the style and size of the LWC modal window.
-.slds-input_faux {
-	background-color: #fff;
+.slds-modal__content{
+    position : relative !important;
+	max-height : unset !important;
+
+}
+.slds-modal__container{
+    max-width: 95rem !important;
+    width:95% !important;
+	min-width : 800px !important;
+}
+.slds-p-around--medium{
+    padding : 0 !important;
+	max-height : unset !important;
+}
+.cuf-content{
+    padding : 0 !important;
 }
 
-.slds-button_neutral{
-	background-color: #fff;
-	border-color: #aeaeae;
-}
-
-.slds-button_neutral:hover{
-	background-color: #f3f3f3;
-	border-color: #aeaeae;
-	cursor : pointer;
+.toastMessage.forceActionsText{
+     white-space : pre-line !important;
 }
